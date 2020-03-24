@@ -7,7 +7,7 @@ def normal_backround():
     #open( , a+
    # title = "Select Backround"
     clr = colorchooser.askcolor(title="select color")
-    #hex=colorchooser.askcolor[]
+    
     (clr[1])
     #pyfile.txt append  new color
     #Should use a simple theme with 3 or 4 colors reuse colors
@@ -68,7 +68,7 @@ root = Tk()
 
 
 
-button = Button(root, text="change color", command=call_me)
+button = Button(root, text="change color", command=normal_backround)
 
 
 
