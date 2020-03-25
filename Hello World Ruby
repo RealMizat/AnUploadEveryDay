@@ -1,0 +1,4 @@
+puts "Hello World"
+puts"Please Enter your name."
+name = gets
+puts "Hi #{ name}, this is my second time trying Ruby, I think it got harder."
