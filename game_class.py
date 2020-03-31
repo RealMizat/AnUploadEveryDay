@@ -10,7 +10,7 @@ win = pygame.display.set_mode((800, 800))
 pygame.display.set_caption("Katana BOMB-Sniper!")
 
 
-
+#Sprite and Image Loading
 walk_right = [pygame.image.load('right1.png'),pygame.image.load('right2.png'),pygame.image.load('right3.png'),pygame.image.load('right4.png'),
                 pygame.image.load('right5.png')]
 
@@ -23,15 +23,11 @@ walk_backward = [pygame.image.load('forward1.png'), pygame.image.load('forward2.
 walk_forward = [pygame.image.load('backward1.png'), pygame.image.load('backward2.png'), pygame.image.load('backward3.png'),pygame.image.load('backward1.png'),
                  pygame.image.load('backward2.png'), pygame.image.load('backward3.png')]
 
-bg = pygame.image.load('backround.png')
+bg = pygame.image.load('backround2.png')
 
 char = pygame.image.load('stand1.png')
 
 
-
-
-
- 
 clock = pygame.time.Clock()
 
 
@@ -43,34 +39,56 @@ class player(object):
         self.height = height
         self.vel = 6
         self.is_jump = False
-        self.jump_count = 8
+        self.jump_count = 10
         self.left = False
         self.right = False
         self.up = False
         self.down = False
         self.walk_count = 0
+        self.standing = True
 
 
     def draw(self, win):
         if self.walk_count + 1 >= 15:
             self.walk_count = 0
-            
-        if self.left:
-            win.blit(walk_left[self.walk_count//3], (self.x, self.y))
-            self.walk_count += 1
-            
-        elif self.right:
-            win.blit(walk_right[self.walk_count//3], (self.x, self.y))
-            self.walk_count += 1
-        elif self.up:
-            win.blit(walk_forward[self.walk_count//3], (self.x, self.y))
-            self.walk_count += 1
-        elif self.down:
-            win.blit(walk_backward[self.walk_count//3], (self.x, self.y))
-            self.walk_count += 1
+        if not(self.standing):
+            if self.left:
+                win.blit(walk_left[self.walk_count//3], (self.x, self.y))
+                self.walk_count += 1
+            elif self.right:
+                win.blit(walk_right[self.walk_count//3], (self.x, self.y))
+                self.walk_count += 1
+            elif self.up:
+                win.blit(walk_forward[self.walk_count//3], (self.x, self.y))
+                self.walk_count += 1
+            elif self.down:
+                win.blit(walk_backward[self.walk_count//3], (self.x, self.y))
+                self.walk_count += 1
         else:
-            win.blit(char, (self.x, self.y))
+            if self.right:
+                win.blit(walk_right[0], (self.x, self.y))
+            elif self.up:
+                win.blit(walk_backward[0], (self.x, self.y))
+            elif self.down:
+                win.blit(walk_forward[0], (self.x, self.y))
+            elif self.left:
+                win.blit(walk_left[0], (self.x, self.y))
+            else:
+                win.blit(char, (self.x, self.y))
 
+
+
+class projectile(object):
+    def __init__(self, x, y, radius, color, facing):
+        self.x = x
+        self.y = y
+        self.radius = radius
+        self.color = color
+        self.facing = facing
+        self.vel = 6 * facing
+
+    def draw(win):
+        pygame.draw.circle(win,self.color, (self.x, self.y), self.radius)
 
 
 def redrawGameWindow():
@@ -81,11 +99,10 @@ def redrawGameWindow():
     pygame.display.update()
 
 #Mainloop
-man = player(60, 640, 12, 32)
+man = player(60, 640, 12, 32)  # Instatiate the class - player(x, y, width, height)
 run = True
 while run:
     clock.tick(30)
-
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -93,25 +110,36 @@ while run:
 
     keys = pygame.key.get_pressed()
 
-    if keys[pygame.K_LEFT] and man.x > man.vel:
+    if keys[pygame.K_LEFT] and man.x > man.vel:     #Barrier Stop walking at edge
         man.x -= man.vel
         man.left = True
         man.right = False
-    elif keys[pygame.K_RIGHT] and man.x < 800 - man.width - man.vel: #  X < Screen Width - Width - vel
+        man.up = False
+        man.down = False
+        man.standing = False
+    elif keys[pygame.K_RIGHT] and man.x < 800 - man.width - man.vel: 
         man.x += man.vel
         man.right = True
         man.left = False
-    elif keys[pygame.K_UP] and man.y > man.vel:
+        man.up = False
+        man.down = False
+        man.standing = False
+    elif keys[pygame.K_UP] and man.y > man.vel:  #man.vel + width/15
         man.y -= man.vel
         man.up = True
         man.down = False
+        man.left = False
+        man.right = False
+        man.standing = False
     elif keys[pygame.K_DOWN] and man.y < 800 - man.height - man.vel :
         man.y += man.vel
         man.down = True
         man.up = False
-    else:
-        man.right = False
         man.left = False
+        man.right = False
+        man.standing = False
+    else:
+        man.standing = True
         man.walk_count = 0
 
         
