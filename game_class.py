@@ -18,10 +18,10 @@ walk_left = [pygame.image.load('left1.png'),pygame.image.load('left2.png'),pygam
              pygame.image.load('left5.png')]
 
 walk_backward = [pygame.image.load('forward1.png'), pygame.image.load('forward2.png'), pygame.image.load('forward3.png'),pygame.image.load('forward1.png'),
-                pygame.image.load('forward2.png'), pygame.image.load('forward3.png')]
+                pygame.image.load('forward2.png')]
 
 walk_forward = [pygame.image.load('backward1.png'), pygame.image.load('backward2.png'), pygame.image.load('backward3.png'),pygame.image.load('backward1.png'),
-                 pygame.image.load('backward2.png'), pygame.image.load('backward3.png')]
+                 pygame.image.load('backward2.png')]
 
 bg = pygame.image.load('backround2.png')
 
@@ -68,16 +68,16 @@ class player(object):
             if self.right:
                 win.blit(walk_right[0], (self.x, self.y))
             elif self.up:
-                win.blit(walk_backward[0], (self.x, self.y))
-            elif self.down:
                 win.blit(walk_forward[0], (self.x, self.y))
+            elif self.down:
+                win.blit(walk_backward[0], (self.x, self.y))
             elif self.left:
                 win.blit(walk_left[0], (self.x, self.y))
             else:
                 win.blit(char, (self.x, self.y))
 
 
-
+#Bullet Class / Weapon Snier
 class projectile(object):
     def __init__(self, x, y, radius, color, facing):
         self.x = x
@@ -87,13 +87,15 @@ class projectile(object):
         self.facing = facing
         self.vel = 6 * facing
 
-    def draw(win):
+    def draw(self, win):
         pygame.draw.circle(win,self.color, (self.x, self.y), self.radius)
 
 
 def redrawGameWindow():
     win.blit(bg, (0, 0))
     man.draw(win)
+    for bullet in bullets:
+        bullet.draw(win)
 
     
     pygame.display.update()
@@ -101,16 +103,39 @@ def redrawGameWindow():
 #Mainloop
 man = player(60, 640, 12, 32)  # Instatiate the class - player(x, y, width, height)
 run = True
+bullets = []            #Creating Bullet List
 while run:
-    clock.tick(30)
+    clock.tick(25)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-
+            
+    #Bullets on screen, movement. 
+    for bullet in bullets:
+        if bullet.x < 800 and bullet.x > 0:
+            bullet.x += bullet.vel           #Move in direction facing (neg or positive)
+        else:
+            bullets.pop(bullets.index(bullet))  #remove bullet place in list
+        
     keys = pygame.key.get_pressed()
 
-    if keys[pygame.K_LEFT] and man.x > man.vel:     #Barrier Stop walking at edge
+    if keys[pygame.K_b]:  #Press Key for Bullet
+        if man.left: # or man.up:
+            facing = -1
+
+        #elif man.right
+
+        #elif man.up
+
+    else:  #man.down
+            facing = 1
+       
+    if len(bullets) < 5:             #len of bullet list
+            bullets.append(projectile(round(man.x + man.width//2),round(man.y + man.height//2), 10, (30, 32, 33), facing))
+    
+
+    if keys[pygame.K_LEFT] and man.x > man.vel - 8:     #Barrier Stop walking at edge
         man.x -= man.vel
         man.left = True
         man.right = False
@@ -124,7 +149,7 @@ while run:
         man.up = False
         man.down = False
         man.standing = False
-    elif keys[pygame.K_UP] and man.y > man.vel:  #man.vel + width/15
+    elif keys[pygame.K_UP] and man.y > man.vel -12:  #man.vel + width/15
         man.y -= man.vel
         man.up = True
         man.down = False
