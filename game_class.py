@@ -31,6 +31,22 @@ char = pygame.image.load('stand1.png')
 clock = pygame.time.Clock()
 
 
+def rect_overlap(rect1, rect2):
+    for a, b in [(rect1, rect2), (rect2, rect1)]:
+        if ((in_rect(a.left, a.top, b)) or (in_rect(a.left, a.bottom, b)) or
+            (in_rect(a.right, a.top, b)) or (in_rect(a.right, a.bottom, b))):
+            return True
+
+    return False
+
+def in_rect(x, y, rect):
+    if (x > rect.left) and (x < rect.right) and (y > rect.top) and (y < rect.bottom):
+        return True
+    else:
+        return False
+
+    
+
 class player(object):
     def __init__(self, x, y, width, height):
         self.x = x
@@ -85,7 +101,7 @@ class projectile(object):
         self.radius = radius
         self.color = color
         self.facing = facing
-        self.vel = 6 * facing
+        self.vel = 10 * facing
 
     def draw(self, win):
         pygame.draw.circle(win,self.color, (self.x, self.y), self.radius)
@@ -120,7 +136,7 @@ while run:
         
     keys = pygame.key.get_pressed()
 
-    if keys[pygame.K_b]:  #Press Key for Bullet
+    if keys[pygame.K_x]:  #Press Key for Bullet
         if man.left: # or man.up:
             facing = -1
 
@@ -128,11 +144,11 @@ while run:
 
         #elif man.up
 
-    else:  #man.down
+        else:  #man.down
             facing = 1
        
-    if len(bullets) < 5:             #len of bullet list
-            bullets.append(projectile(round(man.x + man.width//2),round(man.y + man.height//2), 10, (30, 32, 33), facing))
+        if len(bullets) < 55:             #len of bullet list
+            bullets.append(projectile(round(man.x + man.width//2),round(man.y + man.height//2), 10, (110, 102, 53), facing))
     
 
     if keys[pygame.K_LEFT] and man.x > man.vel - 8:     #Barrier Stop walking at edge
