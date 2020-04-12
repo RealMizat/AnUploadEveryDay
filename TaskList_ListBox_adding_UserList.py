@@ -26,10 +26,14 @@ title = tk.Label(root, text="Welcome Name",)
 title.pack()
 entry = tk.Entry(root)
 entry.pack()
+
+
 add_task = tk.Button(root, text="Add Task", command=update_listbox)
 add_task.pack()
+
 completeTask = tk.Button(root, text="Finish Task", command=completeTask())
 completeTask.pack()
+
 lb_update = tk.Listbox(root)
 lb_update.pack()
 
