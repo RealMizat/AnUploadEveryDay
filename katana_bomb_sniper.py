@@ -53,6 +53,7 @@ class player(object):
         self.down = False
         self.walk_count = 0
         self.standing = True
+        self.hitbox = (self.x, self.y, 18, 40)
 
 
     def draw(self, win):
@@ -82,6 +83,10 @@ class player(object):
                 win.blit(walk_left[0], (self.x, self.y))
             else:
                 win.blit(char, (self.x, self.y))
+
+        self.hitbox = (self.x, self.y, 18, 40)
+        pygame.draw.rect(win, (255, 0, 0), self.hitbox,2)
+
 
 
 #Bullet Class / Weapon Snier
@@ -129,6 +134,7 @@ class enemy_horizontal(object):
         self.path = [self.x, self.end]
         self.walk_count = 0
         self.vel = 3
+        self.hitbox = (self.x + 20, self.y, 28, 60)
 
     def draw(self, win):
         self.move()
@@ -141,6 +147,8 @@ class enemy_horizontal(object):
         else:
             win.blit(self.walk_left[self.walk_count //3], (self.x, self.y))
             self.walk_count += 1
+        self.hitbox = (self.x + 20, self.y, 28, 60)
+        pygame.draw.rect(win, (255, 0, 0), self.hitbox, 2)
 
     def move(self):
         if self.vel > 0:
@@ -156,22 +164,26 @@ class enemy_horizontal(object):
                 self.vel = self.vel * -1
                 self.walk_count = 0
 
+    def hit(self):
+        print('HIT Enemy')
+            
+
 
 
 #Class same as above however move on y axis (up and down) #NEED NEW/DIFFERENT IMAGES
-class enemy_vertical(object):
-    walk_right = [pygame.image.load('R1E.png'), pygame.image.load('R2E.png'),
-                 pygame.image.load('R3E.png'), pygame.image.load('R4E.png'),
-                 pygame.image.load('R5E.png'), pygame.image.load('R6E.png'),
-                 pygame.image.load('R7E.png'), pygame.image.load('R8E.png'),
-                 pygame.image.load('R9E.png'), pygame.image.load('R10E.png'),
-                 pygame.image.load('R11E.png')]
-    walk_left = [pygame.image.load('L1E.png'), pygame.image.load('L2E.png'),
-                pygame.image.load('L3E.png'), pygame.image.load('L4E.png'),
-                pygame.image.load('L5E.png'), pygame.image.load('L6E.png'),
-                pygame.image.load('L7E.png'), pygame.image.load('L8E.png'),
-                pygame.image.load('L9E.png'), pygame.image.load('L10E.png'),
-                pygame.image.load('L11E.png')]
+'''class enemy_vertical(object):
+    walk_right = [pygame.image.load('E.png'), pygame.image.load('E.png'),
+                 pygame.image.load('E.png'), pygame.image.load('E.png'),
+                 pygame.image.load('E.png'), pygame.image.load('E.png'),
+                 pygame.image.load('E.png'), pygame.image.load('E.png'),
+                 pygame.image.load('E.png'), pygame.image.load('E.png'),
+                 pygame.image.load('E.png')]
+    walk_left = [pygame.image.load('E.png'), pygame.image.load('E.png'),
+                pygame.image.load('E.png'), pygame.image.load('E.png'),
+                pygame.image.load('E.png'), pygame.image.load('E.png'),
+                pygame.image.load('E.png'), pygame.image.load('E.png'),
+                pygame.image.load('E.png'), pygame.image.load('E.png'),
+                pygame.image.load('E.png')]
 
     def __init__(self, x, y, width, height, end):
         self.x = x
@@ -181,7 +193,8 @@ class enemy_vertical(object):
         self.end = end
         self.path = [self.x, self.end]
         self.walk_count = 0
-        self.vel = 3
+        self.vel = 2
+        self.hitbox = (self.x + 20, self.y, 28, 60)
 
     def draw(self, win):
         self.move()
@@ -189,10 +202,10 @@ class enemy_vertical(object):
             self.walk_count =  0
 
         if self.vel > 0 :
-            win.blit(self.walk_right[self.walk_count //3], (self.x, self.y))
+            win.blit(self.walk_right[self.walk_count //2], (self.x, self.y))
             self.walk_count += 1
         else:
-            win.blit(self.walk_left[self.walk_count //3], (self.x, self.y))
+            win.blit(self.walk_left[self.walk_count //2], (self.x, self.y))
             self.walk_count += 1
 
     def move(self):
@@ -208,6 +221,12 @@ class enemy_vertical(object):
             else:
                 self.vel = self.vel * -1
                 self.walk_count = 0
+
+    def hit(self):
+            print('HIT Enemy')'''
+            
+
+    
 
        ###  END Class Definitions   ###     
 
@@ -237,10 +256,16 @@ while run:
             
     #Bullets on screen, movement. 
     for bullet in bullets:
+        if bullet.y - bullet.radius < enemy1.hitbox[1] + enemy1.hitbox[3] and bullet.y + bullet.radius > enemy1.hitbox[1]:     #Bullet has y cordinate overlap
+            if bullet.x + bullet.radius > enemy1.hitbox[0] and bullet.x - bullet.radius < enemy1.hitbox[0] + enemy1.hitbox[2]: #Bullet has x cordinate overlap
+                enemy1.hit()      #Call hit method
+                bullets.pop(bullets.index(bullet))
+
         if bullet.x < 800 and bullet.x > 0:
             bullet.x += bullet.vel           #Move direction facing (neg or positive)
         else:
             bullets.pop(bullets.index(bullet))  #remove bullet place in list
+            
         
     keys = pygame.key.get_pressed() #key.get_pressed is an array. Each key K_x is a number in array
     #So no keys will refrence key.get_pressed() aka the array is equals, with keys values, thats how pygame works.
