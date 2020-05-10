@@ -1,5 +1,7 @@
 # AnUploadEveryDay
-To challenege myself I am going to be trying to upload some kind of code everyday. This is to help myself actually code more when studying and researching. I do everyday but find myself reading much more than typing, witch doesn't get you far, at least in any reasonable amount of time. This will help me and others if you would like, to upload more, and possibly pay more attention to how I am coding, although I will admit I haven't thought much about the readability and comments as much as just learning fundamentals. 
+To challenege myself I am going to be trying to upload some kind of code everyday. This is to help myself actually code more when studying and researching. I do everyday but find myself reading much more than typing, witch doesn't get you far, at least in any reasonable amount of time. This will help me and others if you would like, to upload more, and possibly pay more attention to how I am coding, although I will admit I haven't thought much about the readability and comments as much as just learning fundamentals.
+
+Edit - While working on a simple game I updated the same file(s) several times. So a new file wasn't created for each and every day. However some versions, or steps in the process are uploaded.
 
 It's hard to tell when things were uploaded, because if something was uploaded at 5 am and the previous night at midnight, they will say x days ago, so it doesn't show the daily uploads perfectly, witch is fine. I do think a file system will need to be added as well as how I name the files. Maybe a file a month, I don't want to do project because I don't plan on uploading the same projects and edits all the time, that kind of just happened with the Pygame "game".
 
