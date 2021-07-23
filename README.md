@@ -1,4 +1,13 @@
-# AnUploadEveryDay
-To challenege myself I am going to be trying to upload some kind of code everyday. This is to help myself actually code more when studying and researching. I do everyday but find myself reading much more than typing, witch doesn't get you far, at least in any reasonable amount of time. This will help me and others if you would like, to upload more, and possibly pay more attention to how I am coding, although I will admit I haven't thought much about the readability and comments as much as just learning fundamentals.
+# I have edited this entire file
 
-This was a challenge I had for myself. It turned into most uploads being progress on a simple game I created. This was just for myself to practice and submit something "functional" or a "fix" or progress. I may come back to the game in the future, or start a new, with a new repo so if anyone wants to see it, the code will not be a jumbled mess like this repo. I will create it's own clean in the future. As of now it is possible using this repo and even use the sprites I used. Good Luck :D
+The intended and somewhat successful purpose for this repo was to practice writting code. Very new to Python and programing all together,
+I gave my first attempt at a game. I had fun, learned so much, and most valuable I sat down and actually worked out the code for several hours
+for several days, good pure stat boosting my brain. So much time was spent reading, searching things about my code, very basic.
+Only a couple functions, some variables and definitions, not many lines in general, more like the same txt several times. Having several things/parts work, displaying
+structure at a foundational level for the first time was great experience. 
+
+Some, perhaps most will be the same script with some edits and additional code. This was to save progress everyday, more of a personal coding journal,
+rather than functional package. You can definatley run the game, PyGame will be needed, also you may get the sprites I used or even use your own.
+You must have files named the same as the sprites names I posted, with Python able to find them.
+
+
